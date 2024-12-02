@@ -49,6 +49,19 @@ BEGIN
 END 
 //
 
+DROP PROCEDURE IF EXISTS getUser //
+
+CREATE PROCEDURE 
+  getUser(username VARCHAR(32))
+BEGIN  
+	SELECT U.username, P.code, U.role, P.name, P.last_name, P.email, P.phone_number
+	FROM User AS U
+		INNER JOIN Person AS P
+        ON U.code_person = P.code
+	WHERE U.username = username;
+END 
+//
+
 DELIMITER ;
 
 
@@ -56,4 +69,5 @@ DELIMITER ;
 -- Test --
 
 -- CALL getSessionsToday(1);
-CALL getAttendanceOfSession(1);
+-- CALL getAttendanceOfSession(1);
+CALL getUser('luisb');
