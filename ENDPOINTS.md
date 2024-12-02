@@ -5,12 +5,12 @@
 ```ts
 type User = {
     username: string;
+    code: string;
     role: string; // ("ADMIN", "MANAGER")
     name: string;
     last_name: string;
     email: string;
     phone_number: string;
-    status: string; // ("UNKNOWN", "VERIFIED")
 }
 ```
 
