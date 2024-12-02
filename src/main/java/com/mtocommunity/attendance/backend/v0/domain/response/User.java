@@ -9,17 +9,19 @@ public class User {
     private String last_name;
     private String email;
     private String phone_number;
+    private String password;
 
     public User() {
     }
 
-    public User(String username, UserRole role, String name, String last_name, String email, String phone_number) {
+    public User(String username, UserRole role, String name, String last_name, String email, String phone_number, String password) {
         this.username = username;
         this.role = role;
         this.name = name;
         this.last_name = last_name;
         this.email = email;
         this.phone_number = phone_number;
+        this.password = password;
     }
 
     public String getUsername() {
@@ -40,6 +42,10 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setName(String name) {
@@ -68,6 +74,10 @@ public class User {
 
     public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public JSONObject toJSONObject() {

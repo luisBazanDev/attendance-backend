@@ -1,5 +1,7 @@
 package com.mtocommunity.attendance.backend.v0;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+import com.mtocommunity.attendance.backend.service.JwtService;
 import com.mtocommunity.attendance.backend.v0.dao.UserDao;
 import com.mtocommunity.attendance.backend.v0.domain.requests.Login;
 import com.mtocommunity.attendance.backend.v0.domain.response.User;
@@ -19,13 +21,22 @@ public class Auth {
         User user = new UserDTO().findUserByUsername(login.getUsername());
 
         if (user == null) {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
+            return Response.ok(new JSONObject().put("message", "Username or password invalid").toString()).status(Response.Status.UNAUTHORIZED).build();
         }
 
-        // TODO: VALID PASSWORD
+        String bcryptHashString = user.getPassword();
+
+        BCrypt.Result result = BCrypt.verifyer().verify(login.getPassword().toCharArray(), bcryptHashString);
+
+        if(!result.verified) {
+            // Invalid password
+            return Response.ok(new JSONObject().put("message", "Username or password invalid").toString()).status(Response.Status.UNAUTHORIZED).build();
+        }
+
+        String token = new JwtService().generateToken(user.getUsername());
 
         JSONObject response = new JSONObject()
-                .put("token", "YOUR TOKEN")
+                .put("token", token)
                 .put("user", user.toJSONObject());
         return Response.ok(response.toString()).build();
     }

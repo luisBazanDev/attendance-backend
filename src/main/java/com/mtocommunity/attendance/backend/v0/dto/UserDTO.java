@@ -26,6 +26,7 @@ public class UserDTO implements UserDao {
                 user.setName(resultSet.getString("name"));
                 user.setRole(UserRole.valueOf(resultSet.getString("role")));
                 user.setPhone_number(resultSet.getString("phone_number"));
+                user.setPassword(resultSet.getString("password"));
             }
             resultSet.close();
             statement.close();

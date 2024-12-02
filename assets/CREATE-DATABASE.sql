@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS Person (
 CREATE TABLE IF NOT EXISTS User (
 	id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(32) NOT NULL,
-    password VARCHAR(32) NOT NULL,
+    password VARCHAR(72) NOT NULL,
     htop_seed VARCHAR(36) NOT NULL,
     code_person CHAR(32) NOT NULL,
     role ENUM('ADMIN', 'MANAGER') NOT NULL DEFAULT 'MANAGER',
@@ -70,10 +70,11 @@ VALUES
 ('U25001033', 'Diana', 'Perez', 'aa2@gmail.com', '51241203122', 'UNKNOWN'),
 ('U26001023', 'Pepe', 'Ramos', 'a@gmail.com', '51131203122', 'VERIFIED');
 
+-- Passwords: 123456
 INSERT INTO User (username, password, htop_seed, code_person, role)
 VALUES
-('luisb', '123456', '', 'U22203189', 'ADMIN'),
-('peper', '123456', '', 'U26001023', 'MANAGER');
+('luisb', '$2a$12$9K.FExxuDKwEEvF0P.FwMeV9z/pnadCMdNK/kXq1DJksqXmfpYhvG', '', 'U22203189', 'ADMIN'),
+('peper', '$2a$12$9K.FExxuDKwEEvF0P.FwMeV9z/pnadCMdNK/kXq1DJksqXmfpYhvG', '', 'U26001023', 'MANAGER');
 
 INSERT INTO `Group` (name, description, amount_persons, amount_sessions)
 VALUES
