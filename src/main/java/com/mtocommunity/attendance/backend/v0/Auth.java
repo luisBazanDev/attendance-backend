@@ -2,13 +2,15 @@ package com.mtocommunity.attendance.backend.v0;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.mtocommunity.attendance.backend.service.JwtService;
-import com.mtocommunity.attendance.backend.v0.dao.UserDao;
 import com.mtocommunity.attendance.backend.v0.domain.requests.Login;
 import com.mtocommunity.attendance.backend.v0.domain.response.User;
 import com.mtocommunity.attendance.backend.v0.dto.UserDTO;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import org.json.JSONObject;
 
@@ -39,5 +41,14 @@ public class Auth {
                 .put("token", token)
                 .put("user", user.toJSONObject());
         return Response.ok(response.toString()).build();
+    }
+
+    @GET
+    @Path("/valid")
+    @Produces("application/json")
+    public Response valid(ContainerRequestContext request) {
+        User user = (User) request.getProperty("user");
+
+        return Response.ok((new JSONObject().put("user", user.toJSONObject())).toString()).build();
     }
 }

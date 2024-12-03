@@ -28,9 +28,8 @@ public class JwtService {
         return generateToken(new HashMap<>(), username);
     }
 
-    public boolean isTokenValid(String token, String username) {
-        final String userName = extractSubject(token);
-        return (userName.equals(username)) && !isTokenExpired(token);
+    public boolean isValid(String token) {
+        return !extractSubject(token).isEmpty();
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
