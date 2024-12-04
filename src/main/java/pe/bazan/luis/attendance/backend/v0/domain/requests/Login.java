@@ -1,4 +1,4 @@
-package com.mtocommunity.attendance.backend.v0.domain.requests;
+package pe.bazan.luis.attendance.backend.v0.domain.requests;
 
 public class Login {
     private String username;

@@ -1,4 +1,4 @@
-package com.mtocommunity.attendance.backend.v0;
+package pe.bazan.luis.attendance.backend.v0;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;

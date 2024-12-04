@@ -1,13 +1,8 @@
-package com.mtocommunity.attendance.backend.v0;
+package pe.bazan.luis.attendance.backend.v0;
 
-import com.mtocommunity.attendance.backend.service.JwtService;
-import com.mtocommunity.attendance.backend.v0.domain.response.User;
-import com.mtocommunity.attendance.backend.v0.dto.UserDTO;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.ws.rs.Produces;
+import pe.bazan.luis.attendance.backend.service.JwtService;
+import pe.bazan.luis.attendance.backend.v0.domain.response.User;
+import pe.bazan.luis.attendance.backend.v0.dto.UserDTO;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.core.MediaType;

@@ -1,16 +1,15 @@
-package com.mtocommunity.attendance.backend.v0;
+package pe.bazan.luis.attendance.backend.v0;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import com.mtocommunity.attendance.backend.service.JwtService;
-import com.mtocommunity.attendance.backend.v0.domain.requests.Login;
-import com.mtocommunity.attendance.backend.v0.domain.response.User;
-import com.mtocommunity.attendance.backend.v0.dto.UserDTO;
+import pe.bazan.luis.attendance.backend.service.JwtService;
+import pe.bazan.luis.attendance.backend.v0.domain.requests.Login;
+import pe.bazan.luis.attendance.backend.v0.domain.response.User;
+import pe.bazan.luis.attendance.backend.v0.dto.UserDTO;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.container.ContainerRequestContext;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import org.json.JSONObject;
 

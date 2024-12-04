@@ -1,4 +1,4 @@
-package com.mtocommunity.attendance.backend.singleton;
+package pe.bazan.luis.attendance.backend.singleton;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;

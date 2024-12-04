@@ -1,4 +1,4 @@
-package com.mtocommunity.attendance.backend.v0.domain.response;
+package pe.bazan.luis.attendance.backend.v0.domain.response;
 
 import org.json.JSONObject;
 

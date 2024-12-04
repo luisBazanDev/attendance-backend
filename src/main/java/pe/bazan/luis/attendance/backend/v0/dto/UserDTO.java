@@ -1,9 +1,9 @@
-package com.mtocommunity.attendance.backend.v0.dto;
+package pe.bazan.luis.attendance.backend.v0.dto;
 
-import com.mtocommunity.attendance.backend.singleton.DatabaseConnection;
-import com.mtocommunity.attendance.backend.v0.dao.UserDao;
-import com.mtocommunity.attendance.backend.v0.domain.response.User;
-import com.mtocommunity.attendance.backend.v0.domain.response.UserRole;
+import pe.bazan.luis.attendance.backend.singleton.DatabaseConnection;
+import pe.bazan.luis.attendance.backend.v0.dao.UserDao;
+import pe.bazan.luis.attendance.backend.v0.domain.response.User;
+import pe.bazan.luis.attendance.backend.v0.domain.response.UserRole;
 
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
