@@ -15,7 +15,7 @@ import java.sql.ResultSet;
 public class PersonDTO implements PersonDao {
     @Override
     public Person addPerson(AddPerson person){
-        String query = "CALL AddPersonToGroup(?)";
+        String query = "CALL AddPersonToGroup(?, ?, ?, ?, ?, ?)";
         Person user = null;
 
         try {

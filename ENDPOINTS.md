@@ -1,3 +1,7 @@
+# Installation
+## tomcatt
+When compiling the war must be called ROOT to have access to the main prefix “/” and to test the application edit at startup time change in deployment for example: '/test_war_exploded' delete '/test_war_exploded' to get the main prefix
+
 ## Entities
 
 ### User
@@ -184,3 +188,66 @@ HTTP 401 Unauthorized
 }
 ```
 
+### Add Manager to Group
+
+POST /api/v0/auth/addManager
+
+#### Entities
+
+```ts
+type Manager = {
+    role: string,
+    user_id: number;
+    name: string;
+    code_person: string;
+    last_name: string;
+    email: string;
+    username: string;
+}
+```
+
+```json
+{
+  "username": "",
+  "password": "",
+  "htop_seed": "",
+  "code_person": "",
+  "name": "",
+  "last_name": "",
+  "email": "",
+  "phone_number": "",
+  "group_id": 0
+}
+```
+
+HTTP 200
+
+```json
+{
+  Manager
+}
+```
+
+HTTP 403 Forbidden
+
+```json
+{
+  "message": "Token expired or don't have token"
+}
+```
+
+HTTP 400 Bad Request
+
+```json
+{
+  "message": "The manager could not be created correctly"
+}
+```
+
+HTTP 401 Unauthorized
+
+```json
+{
+  "message": "You are not an administrator to create manager"
+}
+```

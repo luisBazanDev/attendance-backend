@@ -19,6 +19,8 @@ public class JwtFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext context) throws IOException {
         String path = context.getUriInfo().getRequestUri().getPath();
 
+        System.out.println(path);
+
         if (path.startsWith("/api")) {
             doFilterApiRoutes(context);
         }
@@ -27,18 +29,31 @@ public class JwtFilter implements ContainerRequestFilter {
     private void doFilterApiRoutes(ContainerRequestContext context) {
         String[] routeParts = context.getUriInfo().getRequestUri().getPath().split("/");
 
+        System.out.println(routeParts.length);
+
         if (routeParts.length < 3) {
             abortRequest(context);
             return;
         }
 
         String[] restRouteParts = new String[routeParts.length - 3];
+
+        System.out.println(restRouteParts.length);
+
         System.arraycopy(routeParts, 3, restRouteParts, 0, restRouteParts.length);
+
+        System.out.println(restRouteParts.length);
+
         String restRoute = "/" + String.join("/", restRouteParts);
+
+        System.out.println(restRoute);
 
         String[] publicRouteParts = {"/auth"};
 
         for (String publicRoute : publicRouteParts) {
+
+            System.out.println(restRoute);
+
             if (publicRoute.equals(restRoute)) {
                 return;
             }
@@ -48,6 +63,9 @@ public class JwtFilter implements ContainerRequestFilter {
     }
 
     private void doFilterPrivateRoutes(ContainerRequestContext context, String restRoute) {
+
+        System.out.println("PASOOOOO!!!");
+
         String authorization = context.getHeaders().getFirst("Authorization");
 
         if (authorization == null || !authorization.startsWith("Bearer ")) {
@@ -65,7 +83,6 @@ public class JwtFilter implements ContainerRequestFilter {
         }
 
         User user = new UserDTO().findUserByUsername(jwtService.extractSubject(token));
-        System.out.println(user.toJSONObject().toString());
         context.setProperty("user", user);
     }
 

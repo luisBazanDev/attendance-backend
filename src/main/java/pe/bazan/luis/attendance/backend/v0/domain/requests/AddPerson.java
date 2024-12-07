@@ -1,14 +1,18 @@
 package pe.bazan.luis.attendance.backend.v0.domain.requests;
 
 public class AddPerson {
-    private String personId, firstName, lastName, phone;
+    private String personId, firstName, lastName, email, phone;
     private int groupId;
 
-    public AddPerson(String personId, String phone, int groupId, String lastName, String firstName) {
+    public AddPerson() {
+    }
+
+    public AddPerson(String personId, String phone, int groupId, String lastName, String email, String firstName) {
         this.personId = personId;
         this.phone = phone;
         this.groupId = groupId;
         this.lastName = lastName;
+        this.email = email;
         this.firstName = firstName;
     }
 
@@ -50,5 +54,13 @@ public class AddPerson {
 
     public void setGroupId(int groupId) {
         this.groupId = groupId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

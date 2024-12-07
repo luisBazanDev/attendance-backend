@@ -6,6 +6,9 @@ public class GroupReq {
     private String name, description;
     private int amount_persons, amount_sessions;
 
+    public GroupReq() {
+    }
+
     public GroupReq(String name, String description, int amount_persons, int amount_sessions) {
         this.name = name;
         this.description = description;
