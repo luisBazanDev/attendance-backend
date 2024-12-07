@@ -165,4 +165,23 @@ public class Auth {
 
         return Response.status(401).entity(new JSONObject().put("message", "You are not an manager or admin to create session").toString()).type(MediaType.APPLICATION_JSON_TYPE).build();
     }
+
+    @GET
+    @Path("/getGroupStatistics")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getGroupStatistics(@Context ContainerRequestContext request, @QueryParam("groupId")String groupId) {
+        User user = (User) request.getProperty("user");
+
+        if(user.getRole() == UserRole.ADMIN || user.getRole() == UserRole.MANAGER){
+            GroupStatistics groupStatistics = new GroupDTO().getGroupStatistics(Integer.parseInt(groupId));
+
+            if (groupStatistics == null) {
+                return Response.ok(new JSONObject().put("message", "Results were not obtained correctly").toString()).status(Response.Status.BAD_REQUEST).build();
+            }
+
+            return Response.ok(groupStatistics.toJSONObject().toString()).build();
+        }
+
+        return Response.status(401).entity(new JSONObject().put("message", "You don't have administrator role to use the api").toString()).type(MediaType.APPLICATION_JSON_TYPE).build();
+    }
 }

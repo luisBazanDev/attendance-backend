@@ -370,3 +370,55 @@ HTTP 401 Unauthorized
   "message": "You are not an manager or admin to create session"
 }
 ```
+
+### Get Group Statistics
+
+GET /api/v0/auth/getGroupStatistics
+
+#### Entities
+
+```ts
+type Statistics = {
+    TotalPersons: number,
+    TotalSessions: number,
+    TotalAttendances: number
+}
+```
+
+### Query Param
+
+```jquery-css
+groupId: 0
+```
+
+HTTP 200
+
+```json
+{
+  Statistics
+}
+```
+
+HTTP 403 Forbidden
+
+```json
+{
+  "message": "Token expired or don't have token"
+}
+```
+
+HTTP 400 Bad Request
+
+```json
+{
+  "message": "Results were not obtained correctly"
+}
+```
+
+HTTP 401 Unauthorized
+
+```json
+{
+  "message": "You don't have administrator role to use the api"
+}
+```

@@ -5,6 +5,7 @@ import pe.bazan.luis.attendance.backend.v0.dao.GroupDao;
 import pe.bazan.luis.attendance.backend.v0.domain.requests.GroupReq;
 import pe.bazan.luis.attendance.backend.v0.domain.requests.StateGroup;
 import pe.bazan.luis.attendance.backend.v0.domain.response.GroupResp;
+import pe.bazan.luis.attendance.backend.v0.domain.response.GroupStatistics;
 import pe.bazan.luis.attendance.backend.v0.domain.response.User;
 import pe.bazan.luis.attendance.backend.v0.domain.response.UserRole;
 
@@ -59,6 +60,31 @@ public class GroupDTO implements GroupDao {
             resultSet.close();
             statement.close();
             return stateGroup;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public GroupStatistics getGroupStatistics(int groupId){
+        String query = "CALL GetGroupStatistics(?)";
+        GroupStatistics groupStatistics = null;
+
+        try {
+            DatabaseConnection databaseInstance = DatabaseConnection.getInstancia();
+            CallableStatement statement = databaseInstance.getConexion().prepareCall(query);
+            statement.setInt(1, groupId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                groupStatistics = new GroupStatistics();
+                groupStatistics.setTotalPersons(resultSet.getInt("TotalPersons"));
+                groupStatistics.setTotalSessions(resultSet.getInt("TotalSessions"));
+                groupStatistics.setTotalAttendances(resultSet.getInt("TotalAttendance"));
+            }
+            resultSet.close();
+            statement.close();
+            return groupStatistics;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
