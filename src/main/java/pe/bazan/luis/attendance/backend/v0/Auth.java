@@ -8,15 +8,9 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Request;
 import org.jboss.weld.environment.se.bindings.Parameters;
 import pe.bazan.luis.attendance.backend.service.JwtService;
-import pe.bazan.luis.attendance.backend.v0.domain.requests.AddPerson;
-import pe.bazan.luis.attendance.backend.v0.domain.requests.GroupReq;
-import pe.bazan.luis.attendance.backend.v0.domain.requests.Login;
-import pe.bazan.luis.attendance.backend.v0.domain.requests.ManagerReq;
+import pe.bazan.luis.attendance.backend.v0.domain.requests.*;
 import pe.bazan.luis.attendance.backend.v0.domain.response.*;
-import pe.bazan.luis.attendance.backend.v0.dto.GroupDTO;
-import pe.bazan.luis.attendance.backend.v0.dto.ManagerDTO;
-import pe.bazan.luis.attendance.backend.v0.dto.PersonDTO;
-import pe.bazan.luis.attendance.backend.v0.dto.UserDTO;
+import pe.bazan.luis.attendance.backend.v0.dto.*;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.Response;
 import org.json.JSONObject;
@@ -122,5 +116,25 @@ public class Auth {
         }
 
         return Response.status(401).entity(new JSONObject().put("message", "You are not an administrator to create manager").toString()).type(MediaType.APPLICATION_JSON_TYPE).build();
+    }
+
+    @POST
+    @Path("/createSession")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createSession(@Context ContainerRequestContext request, SessionReq sessionReq) {
+        User user = (User) request.getProperty("user");
+
+        if(user.getRole() == UserRole.ADMIN){
+            SessionResp sessionResp = new SessionDTO().create(sessionReq);
+
+            if (sessionResp == null) {
+                return Response.ok(new JSONObject().put("message", "The session could not be created correctly").toString()).status(Response.Status.BAD_REQUEST).build();
+            }
+
+            return Response.ok(sessionResp.toJSONObject().toString()).build();
+        }
+
+        return Response.status(401).entity(new JSONObject().put("message", "You are not an administrator to create session").toString()).type(MediaType.APPLICATION_JSON_TYPE).build();
     }
 }

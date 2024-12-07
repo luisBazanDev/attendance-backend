@@ -251,3 +251,62 @@ HTTP 401 Unauthorized
   "message": "You are not an administrator to create manager"
 }
 ```
+
+### Create Session
+
+POST /api/v0/auth/createSession
+
+#### Entities
+
+```ts
+type Session = {
+    sessionId: number,
+    groupId: number;
+    sessionNumber: number;
+    createdAt: date;
+    duration: number;
+    description: string;
+}
+```
+
+```json
+{
+  "groupId": 0,
+  "sessionNumber": 0,
+  "startAt": "",
+  "duration": 90,
+  "description": "",
+}
+```
+
+HTTP 200
+
+```json
+{
+  Session
+}
+```
+
+HTTP 403 Forbidden
+
+```json
+{
+  "message": "Token expired or don't have token"
+}
+```
+
+HTTP 400 Bad Request
+
+```json
+{
+  "message": "The session could not be created correctly"
+}
+```
+
+HTTP 401 Unauthorized
+
+```json
+{
+  "message": "You are not an administrator to create session"
+}
+```
