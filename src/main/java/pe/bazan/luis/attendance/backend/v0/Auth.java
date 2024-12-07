@@ -1,12 +1,15 @@
 package pe.bazan.luis.attendance.backend.v0;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Request;
 import org.jboss.weld.environment.se.bindings.Parameters;
+import org.json.JSONArray;
 import pe.bazan.luis.attendance.backend.service.JwtService;
 import pe.bazan.luis.attendance.backend.v0.domain.requests.*;
 import pe.bazan.luis.attendance.backend.v0.domain.response.*;
@@ -14,6 +17,9 @@ import pe.bazan.luis.attendance.backend.v0.dto.*;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.Response;
 import org.json.JSONObject;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Path("/auth")
 public class Auth {
@@ -180,6 +186,106 @@ public class Auth {
             }
 
             return Response.ok(groupStatistics.toJSONObject().toString()).build();
+        }
+
+        return Response.status(401).entity(new JSONObject().put("message", "You don't have administrator role to use the api").toString()).type(MediaType.APPLICATION_JSON_TYPE).build();
+    }
+
+    @GET
+    @Path("/showAllGroups")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response showAllGroups(@Context ContainerRequestContext request) {
+        User user = (User) request.getProperty("user");
+
+        if(user.getRole() == UserRole.ADMIN || user.getRole() == UserRole.MANAGER){
+            List<GroupResp> groupResps = new GroupDTO().showAllGroups();
+
+            System.out.println(groupResps.size());
+
+            if (groupResps == null) {
+                return Response.ok(new JSONObject().put("message", "Results were not obtained correctly").toString()).status(Response.Status.BAD_REQUEST).build();
+            }
+
+            JSONArray jsonArray = new JSONArray();
+
+            for (GroupResp groupResp : groupResps) {
+                jsonArray.put(groupResp.toJSONObject());
+            }
+
+            return Response.ok(jsonArray.toString()).build();
+        }
+
+        return Response.status(401).entity(new JSONObject().put("message", "You don't have administrator role to use the api").toString()).type(MediaType.APPLICATION_JSON_TYPE).build();
+    }
+
+    @GET
+    @Path("/searchGroupByName")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchGroupByName(@Context ContainerRequestContext request, @QueryParam("name") String name) {
+        User user = (User) request.getProperty("user");
+
+        if(user.getRole() == UserRole.ADMIN || user.getRole() == UserRole.MANAGER){
+            GroupResp groupResps = new GroupDTO().SearchGroupByName(name);
+
+            if (groupResps == null) {
+                return Response.ok(new JSONObject().put("message", "Results were not obtained correctly").toString()).status(Response.Status.BAD_REQUEST).build();
+            }
+
+            return Response.ok(groupResps.toJSONObject().toString()).build();
+        }
+
+        return Response.status(401).entity(new JSONObject().put("message", "You don't have administrator role to use the api").toString()).type(MediaType.APPLICATION_JSON_TYPE).build();
+    }
+
+    @GET
+    @Path("/showAssignationByGroupID")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response showAssignationByGroupID(@Context ContainerRequestContext request, @QueryParam("id") int groupId) {
+        User user = (User) request.getProperty("user");
+
+        if(user.getRole() == UserRole.ADMIN || user.getRole() == UserRole.MANAGER){
+            List<Assignation> groupResps = new GroupDTO().ShowAssignationByGroupID(groupId);
+
+            System.out.println(groupResps.size());
+
+            if (groupResps == null) {
+                return Response.ok(new JSONObject().put("message", "Results were not obtained correctly").toString()).status(Response.Status.BAD_REQUEST).build();
+            }
+
+            JSONArray jsonArray = new JSONArray();
+
+            for (Assignation groupResp : groupResps) {
+                jsonArray.put(groupResp.toJSONObject());
+            }
+
+            return Response.ok(jsonArray.toString()).build();
+        }
+
+        return Response.status(401).entity(new JSONObject().put("message", "You don't have administrator role to use the api").toString()).type(MediaType.APPLICATION_JSON_TYPE).build();
+    }
+
+    @GET
+    @Path("/searchSessionsByGroupID")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchSessionsByGroupID(@Context ContainerRequestContext request, @QueryParam("id") int groupId) {
+        User user = (User) request.getProperty("user");
+
+        if(user.getRole() == UserRole.ADMIN || user.getRole() == UserRole.MANAGER){
+            List<SessionResp> groupResps = new SessionDTO().searchSessionsByGroupID(groupId);
+
+            System.out.println(groupResps.size());
+
+            if (groupResps == null) {
+                return Response.ok(new JSONObject().put("message", "Results were not obtained correctly").toString()).status(Response.Status.BAD_REQUEST).build();
+            }
+
+            JSONArray jsonArray = new JSONArray();
+
+            for (SessionResp groupResp : groupResps) {
+                jsonArray.put(groupResp.toJSONObject());
+            }
+
+            return Response.ok(jsonArray.toString()).build();
         }
 
         return Response.status(401).entity(new JSONObject().put("message", "You don't have administrator role to use the api").toString()).type(MediaType.APPLICATION_JSON_TYPE).build();

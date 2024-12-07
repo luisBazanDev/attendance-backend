@@ -10,6 +10,8 @@ import pe.bazan.luis.attendance.backend.v0.domain.response.SessionResp;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SessionDTO implements SessionDao {
     @Override
@@ -35,6 +37,34 @@ public class SessionDTO implements SessionDao {
                 sessionResp.setCreatedAt(resultSet.getTimestamp("start_at"));
                 sessionResp.setDuration(resultSet.getInt("duration_in_minutes"));
                 sessionResp.setDescription(resultSet.getString("description"));
+            }
+            resultSet.close();
+            statement.close();
+            return sessionResp;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    @Override
+    public List<SessionResp> searchSessionsByGroupID(int groupId) {
+        String query = "CALL SearchSessionsByGroupID(?)";
+        List<SessionResp> sessionResp = new ArrayList<>();
+
+        try {
+            DatabaseConnection databaseInstance = DatabaseConnection.getInstancia();
+            CallableStatement statement = databaseInstance.getConexion().prepareCall(query);
+            statement.setInt(1, groupId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                sessionResp.add(new SessionResp(
+                        resultSet.getInt("SessionID"),
+                        resultSet.getInt("GroupID"),
+                        resultSet.getInt("SessionNumber"),
+                        resultSet.getInt("DurationInMinutes"),
+                        resultSet.getTimestamp("StartAt"),
+                        resultSet.getString("SessionDescription")
+                ));
             }
             resultSet.close();
             statement.close();

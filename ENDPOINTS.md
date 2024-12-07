@@ -422,3 +422,216 @@ HTTP 401 Unauthorized
   "message": "You don't have administrator role to use the api"
 }
 ```
+
+### Get All Groups
+
+GET /api/v0/auth/showAllGroups
+
+#### Entities
+
+```ts
+type Groups = {
+    Id: number,
+    name: string,
+    description: string,
+    amount_persons: number,
+    amount_sessions: number
+}
+```
+
+HTTP 200
+
+```json
+[
+  Groups
+]
+```
+
+HTTP 403 Forbidden
+
+```json
+{
+  "message": "Token expired or don't have token"
+}
+```
+
+HTTP 400 Bad Request
+
+```json
+{
+  "message": "Results were not obtained correctly"
+}
+```
+
+HTTP 401 Unauthorized
+
+```json
+{
+  "message": "You don't have administrator role to use the api"
+}
+```
+
+### Get Search Group by Name
+
+GET /api/v0/auth/searchGroupByName
+
+### Query Param
+
+```jquery-css
+name: string
+```
+
+#### Entities
+
+```ts
+type Group = {
+    Id: number,
+    name: string,
+    description: string,
+    amount_persons: number,
+    amount_sessions: number
+}
+```
+
+HTTP 200
+
+```json
+{
+  Group
+}
+```
+
+HTTP 403 Forbidden
+
+```json
+{
+  "message": "Token expired or don't have token"
+}
+```
+
+HTTP 400 Bad Request
+
+```json
+{
+  "message": "Results were not obtained correctly"
+}
+```
+
+HTTP 401 Unauthorized
+
+```json
+{
+  "message": "You don't have administrator role to use the api"
+}
+```
+
+### Get Show Assignation by Group ID
+
+GET /api/v0/auth/showAssignationByGroupID
+
+### Query Param
+
+```jquery-css
+id: number
+```
+
+#### Entities
+
+```ts
+type Group = {
+    AssignationID: number,
+    PersonCode: string,
+    PersonName: string,
+    PersonLastName: string,
+    PersonEmail: string,
+    PersonPhone: string,
+    PersonState: string,
+}
+```
+
+HTTP 200
+
+```json
+{
+  Group
+}
+```
+
+HTTP 403 Forbidden
+
+```json
+{
+  "message": "Token expired or don't have token"
+}
+```
+
+HTTP 400 Bad Request
+
+```json
+{
+  "message": "Results were not obtained correctly"
+}
+```
+
+HTTP 401 Unauthorized
+
+```json
+{
+  "message": "You don't have administrator role to use the api"
+}
+```
+
+### Get Search Sessions By Group ID
+
+GET /api/v0/auth/searchSessionsByGroupID
+
+### Query Param
+
+```jquery-css
+id: number
+```
+
+#### Entities
+
+```ts
+type Sessions = {
+    sessionId: number,
+    groupId: number,
+    sessionNumber: number,
+    createdAt: timestamp,
+    duration: number,
+    description: string
+}
+```
+
+HTTP 200
+
+```json
+{
+  Sessions
+}
+```
+
+HTTP 403 Forbidden
+
+```json
+{
+  "message": "Token expired or don't have token"
+}
+```
+
+HTTP 400 Bad Request
+
+```json
+{
+  "message": "Results were not obtained correctly"
+}
+```
+
+HTTP 401 Unauthorized
+
+```json
+{
+  "message": "You don't have administrator role to use the api"
+}
+```
