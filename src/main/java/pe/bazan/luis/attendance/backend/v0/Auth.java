@@ -82,13 +82,21 @@ public class Auth {
         User user = (User) request.getProperty("user");
 
         if(user.getRole() == UserRole.ADMIN || user.getRole() == UserRole.MANAGER){
-            Person groupResp = new PersonDTO().addPerson(addPerson);
 
-            if (groupResp == null) {
-                return Response.ok(new JSONObject().put("message", "The person could not be created correctly").toString()).status(Response.Status.BAD_REQUEST).build();
+            StateGroup result = new GroupDTO().checkLimit(addPerson.getGroupId());
+
+            if(result == StateGroup.AVAILABLE){
+
+                Person groupResp = new PersonDTO().addPerson(addPerson);
+
+                if (groupResp == null) {
+                    return Response.ok(new JSONObject().put("message", "The person could not be created correctly").toString()).status(Response.Status.BAD_REQUEST).build();
+                }
+
+                return Response.ok(groupResp.toJSONObject().toString()).build();
             }
 
-            return Response.ok(groupResp.toJSONObject().toString()).build();
+            return Response.ok(new JSONObject().put("message", "You have reached the limit of people in the group").toString()).status(Response.Status.TOO_MANY_REQUESTS).build();
         }
         return Response.status(401).entity(new JSONObject().put("message", "You are not an administrator and manager to create person").toString()).type(MediaType.APPLICATION_JSON_TYPE).build();
     }
@@ -136,5 +144,25 @@ public class Auth {
         }
 
         return Response.status(401).entity(new JSONObject().put("message", "You are not an administrator to create session").toString()).type(MediaType.APPLICATION_JSON_TYPE).build();
+    }
+
+    @POST
+    @Path("/takeAttendace")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response takeAttendace(@Context ContainerRequestContext request, AttendanceReq attendanceReq) {
+        User user = (User) request.getProperty("user");
+
+        if(user.getRole() == UserRole.ADMIN || user.getRole() == UserRole.MANAGER){
+            AttendanceResp attendanceResp = new AttendanceDTO().take(attendanceReq);
+
+            if (attendanceResp == null) {
+                return Response.ok(new JSONObject().put("message", "The attendance could not be created correctly").toString()).status(Response.Status.BAD_REQUEST).build();
+            }
+
+            return Response.ok(attendanceResp.toJSONObject().toString()).build();
+        }
+
+        return Response.status(401).entity(new JSONObject().put("message", "You are not an manager or admin to create session").toString()).type(MediaType.APPLICATION_JSON_TYPE).build();
     }
 }

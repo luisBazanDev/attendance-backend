@@ -188,6 +188,14 @@ HTTP 401 Unauthorized
 }
 ```
 
+HTTP 429 Too Many Requests
+
+```json
+{
+  "message": "You have reached the limit of people in the group"
+}
+```
+
 ### Add Manager to Group
 
 POST /api/v0/auth/addManager
@@ -308,5 +316,57 @@ HTTP 401 Unauthorized
 ```json
 {
   "message": "You are not an administrator to create session"
+}
+```
+
+### Take Attendance
+
+POST /api/v0/auth/takeAttendace
+
+#### Entities
+
+```ts
+type Attendance = {
+    message: string
+}
+```
+
+```json
+{
+  "personId": "",
+  "groupId": 0,
+  "session_number": 3
+}
+```
+
+HTTP 200
+
+```json
+{
+  Attendance
+}
+```
+
+HTTP 403 Forbidden
+
+```json
+{
+  "message": "Token expired or don't have token"
+}
+```
+
+HTTP 400 Bad Request
+
+```json
+{
+  "message": "The attendance could not be created correctly"
+}
+```
+
+HTTP 401 Unauthorized
+
+```json
+{
+  "message": "You are not an manager or admin to create session"
 }
 ```
