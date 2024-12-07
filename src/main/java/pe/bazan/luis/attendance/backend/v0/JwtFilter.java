@@ -65,6 +65,7 @@ public class JwtFilter implements ContainerRequestFilter {
         }
 
         User user = new UserDTO().findUserByUsername(jwtService.extractSubject(token));
+        System.out.println(user.toJSONObject().toString());
         context.setProperty("user", user);
     }
 
