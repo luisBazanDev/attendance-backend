@@ -635,3 +635,52 @@ HTTP 401 Unauthorized
   "message": "You don't have administrator role to use the api"
 }
 ```
+
+### Get Sessions Today
+
+GET /api/v0/auth/getSessionsToday
+
+#### Entities
+
+```ts
+type Sessions = [
+    duration: number,
+    createdAt: timestamp,
+    sessionNumber: number,
+    groupId: number,
+    description: string,
+    sessionId: number
+];
+```
+
+HTTP 200
+
+```json
+{
+  Sessions
+}
+```
+
+HTTP 403 Forbidden
+
+```json
+{
+  "message": "Token expired or don't have token"
+}
+```
+
+HTTP 400 Bad Request
+
+```json
+{
+  "message": "Results were not obtained correctly"
+}
+```
+
+HTTP 401 Unauthorized
+
+```json
+{
+  "message": "You don't have administrator role to use the api"
+}
+```

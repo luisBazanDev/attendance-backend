@@ -3,6 +3,7 @@ package pe.bazan.luis.attendance.backend.v0.domain.response;
 import org.json.JSONObject;
 
 public class User {
+    private int id;
     private String username;
     private UserRole role;
     private String name;
@@ -14,7 +15,8 @@ public class User {
     public User() {
     }
 
-    public User(String username, UserRole role, String name, String last_name, String email, String phone_number, String password) {
+    public User(int id, String username, UserRole role, String name, String last_name, String email, String phone_number, String password) {
+        this.id = id;
         this.username = username;
         this.role = role;
         this.name = name;
@@ -88,5 +90,13 @@ public class User {
                 .put("last_name", last_name)
                 .put("email", email)
                 .put("phone_number", phone_number);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

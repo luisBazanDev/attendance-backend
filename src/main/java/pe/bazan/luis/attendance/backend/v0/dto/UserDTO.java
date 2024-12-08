@@ -21,6 +21,7 @@ public class UserDTO implements UserDao {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 user = new User();
+                user.setId(resultSet.getInt("id"));
                 user.setUsername(resultSet.getString("username"));
                 user.setEmail(resultSet.getString("email"));
                 user.setName(resultSet.getString("name"));

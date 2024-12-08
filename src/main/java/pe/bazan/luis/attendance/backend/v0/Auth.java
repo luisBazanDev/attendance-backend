@@ -290,4 +290,31 @@ public class Auth {
 
         return Response.status(401).entity(new JSONObject().put("message", "You don't have administrator role to use the api").toString()).type(MediaType.APPLICATION_JSON_TYPE).build();
     }
+
+    @GET
+    @Path("/getSessionsToday")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSessionsToday(@Context ContainerRequestContext request) {
+        User user = (User) request.getProperty("user");
+
+        if(user.getRole() == UserRole.ADMIN || user.getRole() == UserRole.MANAGER){
+            List<SessionResp> groupResps = new SessionDTO().getSessionsToday(user.getId());
+
+            System.out.println(groupResps.size());
+
+            if (groupResps == null) {
+                return Response.ok(new JSONObject().put("message", "Results were not obtained correctly").toString()).status(Response.Status.BAD_REQUEST).build();
+            }
+
+            JSONArray jsonArray = new JSONArray();
+
+            for (SessionResp groupResp : groupResps) {
+                jsonArray.put(groupResp.toJSONObject());
+            }
+
+            return Response.ok(jsonArray.toString()).build();
+        }
+
+        return Response.status(401).entity(new JSONObject().put("message", "You don't have administrator role to use the api").toString()).type(MediaType.APPLICATION_JSON_TYPE).build();
+    }
 }

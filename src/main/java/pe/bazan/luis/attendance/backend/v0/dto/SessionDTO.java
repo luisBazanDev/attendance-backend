@@ -74,4 +74,32 @@ public class SessionDTO implements SessionDao {
         }
         return null;
     }
+
+    public List<SessionResp> getSessionsToday(int user_id){
+        String query = "CALL getSessionsToday(?)";
+        List<SessionResp> sessionResp = new ArrayList<>();
+
+        try {
+            DatabaseConnection databaseInstance = DatabaseConnection.getInstancia();
+            CallableStatement statement = databaseInstance.getConexion().prepareCall(query);
+            statement.setInt(1, user_id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                sessionResp.add(new SessionResp(
+                        resultSet.getInt("id"),
+                        resultSet.getInt("group_id"),
+                        resultSet.getInt("session_number"),
+                        resultSet.getInt("duration_in_minutes"),
+                        resultSet.getTimestamp("start_at"),
+                        resultSet.getString("description")
+                ));
+            }
+            resultSet.close();
+            statement.close();
+            return sessionResp;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }
