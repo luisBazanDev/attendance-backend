@@ -4,17 +4,16 @@ DELIMITER //
 
 DROP PROCEDURE IF EXISTS getSessionsToday //
 
-CREATE PROCEDURE 
-  getSessionsToday(user_id INT)
-BEGIN  
-	SELECT S.*
-	FROM Managing AS M
-		INNER JOIN `Group` AS G
-		ON M.group_id = G.id
-		INNER JOIN Session AS S
-		ON S.group_id = G.id
-	WHERE M.user_id=user_id AND date(S.start_at) = CURDATE();
-END 
+CREATE PROCEDURE `getSessionsToday`(user_id INT)
+BEGIN
+SELECT S.*
+FROM Managing AS M
+         INNER JOIN `Group` AS G
+                    ON M.group_id = G.id
+         INNER JOIN Session AS S
+                    ON S.group_id = G.id
+WHERE M.user_id=user_id AND date(S.start_at) = CURDATE() AND HOUR(S.start_at) = HOUR(NOW()) AND NOW() < ADDTIME(S.start_at, SEC_TO_TIME(S.duration_in_minutes * 60));
+END
 //
 
 DROP PROCEDURE IF EXISTS getAttendanceOfSession //
