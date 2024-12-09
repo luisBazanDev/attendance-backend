@@ -102,4 +102,24 @@ public class SessionDTO implements SessionDao {
         }
         return null;
     }
+
+    public String validateSession(int groupId, int sessionNumber) {
+        String query = "CALL ValidateSessionEndByGroup(?, ?)";
+        try {
+            DatabaseConnection databaseInstance = DatabaseConnection.getInstancia();
+            CallableStatement statement = databaseInstance.getConexion().prepareCall(query);
+            statement.setInt(1, groupId);
+            statement.setInt(2, sessionNumber);
+            ResultSet resultSet = statement.executeQuery();
+
+            String result = resultSet.getString("message");
+
+            resultSet.close();
+            statement.close();
+            return result;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -3,6 +3,7 @@ package pe.bazan.luis.attendance.backend.v0;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mysql.cj.Session;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -160,13 +161,20 @@ public class Auth {
         User user = (User) request.getProperty("user");
 
         if(user.getRole() == UserRole.ADMIN || user.getRole() == UserRole.MANAGER){
-            AttendanceResp attendanceResp = new AttendanceDTO().take(attendanceReq);
+            String result = new SessionDTO().validateSession(attendanceReq.getGroupId(), attendanceReq.getSession_number());
 
-            if (attendanceResp == null) {
-                return Response.ok(new JSONObject().put("message", "The attendance could not be created correctly").toString()).status(Response.Status.BAD_REQUEST).build();
+            if(result.contains("La sesión está activa.")){
+                AttendanceResp attendanceResp = new AttendanceDTO().take(attendanceReq);
+
+                if (attendanceResp == null) {
+                    return Response.ok(new JSONObject().put("message", "The attendance could not be created correctly.").toString()).status(Response.Status.BAD_REQUEST).build();
+                }
+
+                return Response.ok(attendanceResp.toJSONObject().toString()).build();
             }
-
-            return Response.ok(attendanceResp.toJSONObject().toString()).build();
+            else {
+                return Response.ok(new JSONObject().put("message", "The session has ended or has not yet started.").toString()).status(Response.Status.UNAUTHORIZED).build();
+            }
         }
 
         return Response.status(401).entity(new JSONObject().put("message", "You are not an manager or admin to create session").toString()).type(MediaType.APPLICATION_JSON_TYPE).build();

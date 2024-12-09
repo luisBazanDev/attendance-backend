@@ -371,6 +371,12 @@ HTTP 401 Unauthorized
 }
 ```
 
+```json
+{
+  "message": "The session has ended or has not yet started."
+}
+```
+
 ### Get Group Statistics
 
 GET /api/v0/auth/getGroupStatistics
