@@ -384,6 +384,38 @@ END
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE `ValidateSessionEndByGroup`(
+    IN group_id INT,
+    IN session_number TINYINT UNSIGNED
+)
+BEGIN
+	DECLARE start_time DATETIME;
+    DECLARE duration INT;
+    DECLARE end_time DATETIME;
+
+SELECT start_at, duration_in_minutes
+INTO start_time, duration
+FROM Session
+WHERE group_id = group_id AND session_number = session_number
+    LIMIT 1;
+
+IF start_time IS NULL OR duration IS NULL THEN
+SELECT 'Sesión no encontrada.' AS message;
+ELSE
+        SET end_time = ADDTIME(start_time, SEC_TO_TIME(duration * 60));
+
+        IF NOW() < end_time THEN
+SELECT 'La sesión está activa.' AS message;
+ELSE
+SELECT 'La sesión ya terminó.' AS message;
+END IF;
+END IF;
+END
+//
+DELIMITER ;
+
 -- Test --
 
 -- CALL getSessionsToday(1);
