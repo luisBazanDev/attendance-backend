@@ -161,20 +161,13 @@ public class Auth {
         User user = (User) request.getProperty("user");
 
         if(user.getRole() == UserRole.ADMIN || user.getRole() == UserRole.MANAGER){
-            String result = new SessionDTO().validateSession(attendanceReq.getGroupId(), attendanceReq.getSession_number());
+            AttendanceResp attendanceResp = new AttendanceDTO().take(attendanceReq);
 
-            if(result.contains("La sesión está activa.")){
-                AttendanceResp attendanceResp = new AttendanceDTO().take(attendanceReq);
-
-                if (attendanceResp == null) {
-                    return Response.ok(new JSONObject().put("message", "The attendance could not be created correctly.").toString()).status(Response.Status.BAD_REQUEST).build();
-                }
-
-                return Response.ok(attendanceResp.toJSONObject().toString()).build();
+            if (attendanceResp == null) {
+                return Response.ok(new JSONObject().put("message", "The attendance could not be created correctly.").toString()).status(Response.Status.BAD_REQUEST).build();
             }
-            else {
-                return Response.ok(new JSONObject().put("message", "The session has ended or has not yet started.").toString()).status(Response.Status.UNAUTHORIZED).build();
-            }
+
+            return Response.ok(attendanceResp.toJSONObject().toString()).build();
         }
 
         return Response.status(401).entity(new JSONObject().put("message", "You are not an manager or admin to create session").toString()).type(MediaType.APPLICATION_JSON_TYPE).build();
